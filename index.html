@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f1f2e" />
+  <title>Relay — Your deliveries, handled.</title>
+  <meta name="description" content="Relay lets trusted people receive deliveries, pay COD and handle returns for you — within rules you set." />
+  <style>
+    :root{
+      --ink:#0f1f2e;
+      --ink-2:#1f3447;
+      --muted:#617184;
+      --paper:#fffdf8;
+      --white:#ffffff;
+      --line:#dfe5e9;
+      --soft:#f4f7f8;
+      --orange:#ff9900;
+      --orange-2:#ffb84d;
+      --green:#137333;
+      --shadow:0 24px 70px rgba(15,31,46,.12);
+      --radius:22px;
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.5}
+    a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
+    .wrap{width:min(var(--max),calc(100% - 40px));margin:0 auto}
+    .nav{position:sticky;top:0;z-index:30;background:rgba(255,253,248,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(15,31,46,.08)}
+    .nav-inner{height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:21px;letter-spacing:-.4px}
+    .brand-mark{width:34px;height:34px;border-radius:10px;background:var(--ink);position:relative;box-shadow:inset 0 -4px 0 rgba(255,153,0,.9)}
+    .brand-mark:after{content:"";position:absolute;width:12px;height:7px;border:3px solid var(--orange);border-top:0;border-left:0;transform:rotate(34deg);left:9px;top:9px;border-radius:2px}
+    .nav-links{display:flex;align-items:center;gap:24px;color:#3f5162;font-size:14px;font-weight:650}
+    .nav-cta{padding:11px 18px;border-radius:999px;background:var(--ink);color:white;font-weight:750;box-shadow:0 8px 18px rgba(15,31,46,.15)}
+    .hero{padding:84px 0 66px;overflow:hidden;position:relative}
+    .hero:before{content:"";position:absolute;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(255,153,0,.18),rgba(255,153,0,0) 68%);right:-180px;top:-260px;pointer-events:none}
+    .hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:66px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid #e8d3ae;background:#fff8ec;border-radius:999px;color:#714c0c;font-size:13px;font-weight:750;margin-bottom:22px}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--orange)}
+    h1{font-size:clamp(46px,6.6vw,78px);line-height:.98;letter-spacing:-3.5px;margin:0 0 24px;max-width:780px}
+    .hero-copy{font-size:20px;color:#4c6072;max-width:650px;margin:0 0 32px;line-height:1.55}
+    .hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .btn-primary{border:0;background:var(--orange);color:#1d2731;padding:15px 23px;border-radius:12px;font-weight:850;cursor:pointer;box-shadow:0 12px 30px rgba(255,153,0,.28);transition:.2s transform,.2s box-shadow}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(255,153,0,.32)}
+    .btn-secondary{padding:14px 18px;border-radius:12px;border:1px solid #cfd8df;background:white;font-weight:750;color:#2d4153}
+    .micro{font-size:13px;color:#708091;margin-top:13px}
+    .phone-shell{max-width:410px;margin-left:auto;background:#0c1721;border-radius:38px;padding:10px;box-shadow:0 35px 80px rgba(15,31,46,.23);transform:rotate(1.2deg);position:relative}
+    .phone-shell:before{content:"";position:absolute;left:50%;top:9px;transform:translateX(-50%);width:88px;height:22px;border-radius:20px;background:#071018;z-index:3}
+    .phone{background:#eef3ee;border-radius:30px;min-height:590px;overflow:hidden;position:relative}
+    .phone-top{height:82px;background:#075e54;color:white;padding:34px 18px 12px;display:flex;align-items:center;gap:10px}
+    .avatar{width:34px;height:34px;border-radius:50%;background:#f8d6ad;display:grid;place-items:center;color:#6d4422;font-weight:900;font-size:13px}
+    .contact-name{font-weight:800;font-size:15px}.contact-sub{font-size:11px;opacity:.8}
+    .chat{padding:18px 14px 72px;background-image:radial-gradient(rgba(30,70,55,.05) 1px,transparent 1px);background-size:14px 14px;min-height:508px}
+    .bubble{max-width:86%;padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:13px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+    .relay{background:white;border-top-left-radius:2px}.reply{background:#d9fdd3;margin-left:auto;border-top-right-radius:2px}
+    .bubble small{display:block;color:#7c8a8c;font-size:9px;text-align:right;margin-top:4px}
+    .status-card{background:#fff;border:1px solid #d8e2dd;border-radius:14px;padding:12px;margin-top:14px}
+    .status-line{display:flex;gap:9px;align-items:flex-start;font-size:12px;margin:7px 0;color:#31463f}
+    .tick{width:17px;height:17px;border-radius:50%;background:#e0f3e6;color:var(--green);display:grid;place-items:center;font-weight:900;font-size:10px;flex:0 0 auto}
+    .floating-card{position:absolute;background:white;border:1px solid #e4e8eb;box-shadow:var(--shadow);border-radius:16px;padding:14px 15px;right:-62px;bottom:70px;width:205px;transform:rotate(-1.2deg)}
+    .floating-card b{display:block;font-size:13px}.floating-card span{font-size:11px;color:var(--muted)}
+    .section{padding:88px 0}
+    .section.alt{background:#f3f6f7;border-top:1px solid #e7ecef;border-bottom:1px solid #e7ecef}
+    .section-head{max-width:720px;margin-bottom:46px}.kicker{text-transform:uppercase;letter-spacing:1.6px;color:#7b5a22;font-size:12px;font-weight:900}.section h2{font-size:clamp(34px,4vw,52px);line-height:1.05;letter-spacing:-2px;margin:10px 0 15px}.section-head p{color:#5d6f7f;font-size:18px;margin:0}
+    .three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:white;border:1px solid #e0e6ea;border-radius:var(--radius);padding:25px;box-shadow:0 10px 28px rgba(15,31,46,.055)}
+    .step-num{width:34px;height:34px;border-radius:10px;background:var(--ink);color:white;display:grid;place-items:center;font-weight:850;margin-bottom:28px}
+    .card h3{font-size:21px;margin:0 0 9px;letter-spacing:-.4px}.card p{color:#627385;margin:0}
+    .rules-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:26px;align-items:stretch}
+    .rules-copy{background:var(--ink);color:white;border-radius:28px;padding:42px;display:flex;flex-direction:column;justify-content:center;min-height:420px}
+    .rules-copy h2{letter-spacing:-1.8px}.rules-copy p{color:#c8d4dc;font-size:17px}.rules-copy .highlight{color:var(--orange-2);font-weight:850}
+    .rules-ui{background:#fff;border:1px solid #e0e6ea;border-radius:28px;padding:26px;box-shadow:var(--shadow)}
+    .person{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid #e7ecef;margin-bottom:18px}.person-left{display:flex;gap:12px;align-items:center}.person .avatar{width:42px;height:42px}.badge{font-size:11px;font-weight:800;color:#25543a;background:#e7f5eb;border-radius:999px;padding:6px 9px}
+    .permission{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #eef1f3;font-size:14px}.permission:last-child{border-bottom:0}.perm-left b{display:block;font-size:14px}.perm-left span{color:#7a8998;font-size:12px}.toggle{width:40px;height:23px;background:#d8dee3;border-radius:999px;position:relative}.toggle.on{background:#1e7b46}.toggle:after{content:"";position:absolute;width:17px;height:17px;border-radius:50%;background:white;top:3px;left:3px;box-shadow:0 1px 3px rgba(0,0,0,.25)}.toggle.on:after{left:20px}
+    .cases{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.case{background:white;border:1px solid #e1e6ea;border-radius:18px;padding:20px;min-height:176px}.icon{font-size:26px;margin-bottom:22px}.case h3{font-size:17px;margin:0 0 7px}.case p{font-size:13px;color:#687988;margin:0}
+    .proof-strip{background:#fff;border:1px solid #e2e8eb;border-radius:22px;padding:26px;display:grid;grid-template-columns:1.25fr repeat(3,1fr);gap:12px;align-items:center}.proof-title b{font-size:18px}.proof-title span{display:block;color:#738392;font-size:13px;margin-top:5px}.metric{padding:8px 18px;border-left:1px solid #e6eaed}.metric strong{display:block;font-size:30px;letter-spacing:-1px}.metric span{font-size:12px;color:#718190}
+    .cta-box{background:linear-gradient(130deg,#0e1d2a,#18364c);border-radius:30px;padding:52px;color:white;display:grid;grid-template-columns:1fr .9fr;gap:45px;align-items:center;box-shadow:0 30px 80px rgba(15,31,46,.18)}
+    .cta-box h2{margin-top:0}.cta-box p{color:#c8d4dc;font-size:17px;max-width:620px}.signup{background:white;border-radius:18px;padding:10px;display:flex;gap:8px}.signup input{flex:1;min-width:0;border:0;outline:0;padding:10px 12px;color:#203345}.signup button{border:0;border-radius:11px;background:var(--orange);font-weight:850;padding:12px 18px;cursor:pointer}.form-note{font-size:11px;color:#aebbc4;margin-top:9px}.success{display:none;background:#e6f4ea;color:#1e5b35;border-radius:13px;padding:14px;font-weight:750}.success.show{display:block}.signup.hide{display:none}
+    .faq{display:grid;grid-template-columns:1fr 1fr;gap:16px}.faq-item{background:white;border:1px solid #e1e6ea;border-radius:18px;padding:21px}.faq-item b{display:block;margin-bottom:7px}.faq-item p{margin:0;color:#687988;font-size:14px}
+    footer{padding:34px 0 44px;color:#758492;font-size:12px}.footer-inner{display:flex;justify-content:space-between;gap:16px;align-items:center;border-top:1px solid #e2e7ea;padding-top:24px}.concept{padding:5px 9px;border:1px solid #d8dee2;border-radius:999px}
+    @media(max-width:960px){.nav-links a:not(.nav-cta){display:none}.hero{padding-top:55px}.hero-grid,.rules-grid,.cta-box{grid-template-columns:1fr}.phone-shell{margin:12px auto 0}.three{grid-template-columns:1fr}.cases{grid-template-columns:1fr 1fr}.proof-strip{grid-template-columns:1fr 1fr}.proof-title{grid-column:1/-1}.metric{border-left:0;border-top:1px solid #e6eaed;padding-top:16px}.floating-card{right:-12px}.cta-box{padding:38px}}
+    @media(max-width:620px){.wrap{width:min(100% - 26px,var(--max))}.nav-inner{height:64px}h1{letter-spacing:-2.2px}.hero-copy{font-size:17px}.phone-shell{width:92%;}.floating-card{display:none}.cases,.faq{grid-template-columns:1fr}.section{padding:66px 0}.rules-copy{padding:30px;min-height:0}.proof-strip{grid-template-columns:1fr}.proof-title{grid-column:auto}.metric{border-top:1px solid #e6eaed}.cta-box{padding:28px}.signup{flex-direction:column}.footer-inner{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="Relay home"><span class="brand-mark" aria-hidden="true"></span>Relay</a>
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#rules">Your rules</a>
+        <a href="#use-cases">Use cases</a>
+        <a class="nav-cta" href="#signup">Join early access</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Early access · India</div>
+          <h1>Your deliveries, handled. Even when you aren’t home.</h1>
+          <p class="hero-copy">Relay lets the people you already trust receive parcels, pay COD and handle returns for you — within rules you set once.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#signup">Get early access</a>
+            <a class="btn-secondary" href="#how">See how Relay works</a>
+          </div>
+          <div class="micro">Your receiver needs no new app. Relay reaches them on WhatsApp or by phone.</div>
+        </div>
+
+        <div class="phone-shell" aria-label="Example Relay WhatsApp handoff">
+          <div class="phone">
+            <div class="phone-top">
+              <div class="avatar">M</div>
+              <div><div class="contact-name">Relay</div><div class="contact-sub">for Aarav’s deliveries</div></div>
+            </div>
+            <div class="chat">
+              <div class="bubble relay">Hi Meera. Aarav’s ₹2,800 COD parcel is arriving today. You’re authorised to receive and pay for this order. Will you be available?<small>2:14 PM</small></div>
+              <div class="bubble reply">Yes, I’ll receive it.<small>2:15 PM</small></div>
+              <div class="bubble relay">Done. I’ll coordinate the handover and let Aarav know once it’s complete.<small>2:15 PM</small></div>
+              <div class="status-card">
+                <div style="font-weight:850;font-size:13px;margin-bottom:8px">Handover complete</div>
+                <div class="status-line"><span class="tick">✓</span><span>Trusted receiver confirmed</span></div>
+                <div class="status-line"><span class="tick">✓</span><span>₹2,800 within COD limit</span></div>
+                <div class="status-line"><span class="tick">✓</span><span>Parcel received by Meera</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="floating-card"><b>Aarav wasn’t interrupted.</b><span>Relay handled the routine case and closed the loop.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="how">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">Set once. Hand off repeatedly.</div><h2>Turn the trust you already use into rules Relay can act on.</h2><p>No more re-explaining the same instructions to family, guards or delivery riders for every order.</p></div>
+        <div class="three">
+          <div class="card"><div class="step-num">1</div><h3>Add the people you trust</h3><p>Choose a parent, spouse, roommate, neighbour or guard who already handles deliveries when you’re away.</p></div>
+          <div class="card"><div class="step-num">2</div><h3>Set clear boundaries</h3><p>Decide who can receive prepaid orders, pay COD up to a limit, handle returns, or when Relay must ask you first.</p></div>
+          <div class="card"><div class="step-num">3</div><h3>Relay handles the handover</h3><p>When a delivery needs action, Relay contacts the right person through WhatsApp or a call and escalates only exceptions.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="rules">
+      <div class="wrap rules-grid">
+        <div class="rules-copy">
+          <div class="kicker" style="color:#f7be64">You stay in control</div>
+          <h2>Trust isn’t binary. Your permissions shouldn’t be either.</h2>
+          <p>Mom can receive any prepaid parcel. Your guard can take routine packages. COD above ₹5,000 still comes to you. <span class="highlight">Relay remembers the difference.</span></p>
+        </div>
+        <div class="rules-ui">
+          <div class="person"><div class="person-left"><div class="avatar">M</div><div><b>Meera</b><div style="font-size:12px;color:#758493">Mom · Trusted receiver</div></div></div><span class="badge">Active</span></div>
+          <div class="permission"><div class="perm-left"><b>Receive prepaid orders</b><span>No approval needed</span></div><span class="toggle on"></span></div>
+          <div class="permission"><div class="perm-left"><b>Pay cash on delivery</b><span>Up to ₹5,000</span></div><span class="toggle on"></span></div>
+          <div class="permission"><div class="perm-left"><b>Handle returns</b><span>Up to ₹5,000 item value</span></div><span class="toggle on"></span></div>
+          <div class="permission"><div class="perm-left"><b>High-value open-box delivery</b><span>Ask me first</span></div><span class="toggle"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="use-cases">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">One delegation layer</div><h2>Built for the messy last few metres of commerce.</h2><p>Relay helps when the person who ordered isn’t the person standing at the door.</p></div>
+        <div class="cases">
+          <div class="case"><div class="icon">📦</div><h3>Prepaid deliveries</h3><p>Let a trusted person receive routine orders without pulling you into the handover.</p></div>
+          <div class="case"><div class="icon">₹</div><h3>COD payments</h3><p>Allow payment within limits you set, with exceptions routed back to you.</p></div>
+          <div class="case"><div class="icon">↩</div><h3>Return pickups</h3><p>Give the receiver enough context to hand over the right parcel and complete the pickup.</p></div>
+          <div class="case"><div class="icon">☎</div><h3>Exceptions</h3><p>Wrong amount, unknown receiver or a risky order? Relay stops and asks you instead.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="proof-strip">
+          <div class="proof-title"><b>Relay’s north-star metric is simple:</b><span>Routine transactions completed without pulling the buyer back in.</span></div>
+          <div class="metric"><strong>1</strong><span>trusted receiver to start</span></div>
+          <div class="metric"><strong>3 min</strong><span>to set the first rule</span></div>
+          <div class="metric"><strong>0</strong><span>new apps for receivers</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="signup">
+      <div class="wrap">
+        <div class="cta-box">
+          <div><div class="kicker" style="color:#f8bd60">Relay early access</div><h2>Stop coordinating every delivery.</h2><p>Add the person who already receives your parcels. Set the boundaries once. Let Relay handle the routine cases.</p></div>
+          <div>
+            <form class="signup" id="signupForm">
+              <input id="email" type="email" placeholder="you@example.com" aria-label="Email address" required />
+              <button type="submit">Join waitlist</button>
+            </form>
+            <div class="success" id="successMsg">✓ You’re on the Relay early-access list.</div>
+            <div class="form-note">Concept beta signup. No payment details required.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">Questions, answered</div><h2>Delegation without giving up control.</h2></div>
+        <div class="faq">
+          <div class="faq-item"><b>Does my receiver need Relay?</b><p>No. Relay contacts them over WhatsApp or by phone, so the buyer is the only person who needs the app.</p></div>
+          <div class="faq-item"><b>Can Relay act outside my rules?</b><p>No. If a transaction falls outside the permissions you set, Relay escalates it to you instead of guessing.</p></div>
+          <div class="faq-item"><b>Can I change permissions later?</b><p>Yes. Add, remove or restrict trusted receivers at any time from your Relay controls.</p></div>
+          <div class="faq-item"><b>Is Relay only for deliveries?</b><p>Deliveries are the first use case. The same permission model can later extend to other delegated commerce tasks.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner"><div><b style="color:#26394a">Relay</b> · Delegation for everyday commerce</div><div class="concept">Case competition concept · 2026</div></div>
+  </footer>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if(!email) return;
+      try { localStorage.setItem('relay_early_access_email', email); } catch(_) {}
+      this.classList.add('hide');
+      document.getElementById('successMsg').classList.add('show');
+    });
+  </script>
+</body>
+</html>
